@@ -1,0 +1,88 @@
+# ===========================
+# IntelliJ IDEA
+# ===========================
+.idea/
+*.iml
+out/
+
+# ===========================
+# Maven
+# ===========================
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# ===========================
+# Java
+# ===========================
+*.class
+*.log
+
+# ===========================
+# OS Files
+# ===========================
+.DS_Store
+Thumbs.db
+
+# ===========================
+# Environment Variables
+# ===========================
+.env
+.env.*
+
+# ===========================
+# Spring Boot
+# ===========================
+application-local.yml
+application-dev.yml
+application-prod.yml
+
+# Ignore secrets if applicable
+src/main/resources/application-secret.yml
+
+# ===========================
+# Logs
+# ===========================
+logs/
+*.log
+
+# ===========================
+# Docker
+# ===========================
+docker-data/
+mysql-data/
+redis-data/
+kafka-data/
+
+# ===========================
+# VS Code
+# ===========================
+.vscode/
+
+# ===========================
+# Eclipse
+# ===========================
+.project
+.classpath
+.settings/
+
+# ===========================
+# NetBeans
+# ===========================
+nbproject/private/
+
+# ===========================
+# Generated Protobuf Sources
+# (Optional - Maven regenerates them)
+# ===========================
+target/generated-sources/
+
+# ===========================
+# Temporary Files
+# ===========================
+*.tmp
+*.swp
