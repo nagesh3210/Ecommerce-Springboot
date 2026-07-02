@@ -5,12 +5,40 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3307/inventory_db
     username: root
-    password: test
+    password: root
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: inventory-group
+      auto-offset-reset: earliest
+
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+            value:
+              default:
+                type: com.airbnb.inventoryservice.events.OrderCreatedEvent
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+logging:
+  level:
+    org.hibernate.tool.schema: DEBUG
+    org.hibernate.orm.boot: DEBUG
 
 server:
   port: 8082

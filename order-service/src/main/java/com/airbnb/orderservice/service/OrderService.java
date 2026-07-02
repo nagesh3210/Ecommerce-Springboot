@@ -29,10 +29,10 @@ public class OrderService
 
         producer.publishOrderCreated(new OrderCreatedEvent(
                 save.getId(),
+                save.getCustomerId(),
                 save.getProductId(),
                 save.getQuantity(),
-                save.getAmount(),
-                save.getCustomerId()
+                save.getAmount()
         ));
 
 

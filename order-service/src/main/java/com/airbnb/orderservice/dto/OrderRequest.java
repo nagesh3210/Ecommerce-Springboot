@@ -1,14 +1,25 @@
 package com.airbnb.orderservice.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.math.BigDecimal;
 
-public record OrderRequest(Long customerId,
+public record OrderRequest(
+        @NotNull
+        Long customerId,
 
-                           Long productId,
+        @NotNull
+        Long productId,
 
-                           Integer quantity,
+        @NotNull
+        @Positive
+        Integer quantity,
 
-                           BigDecimal amount)
+        @NotNull
+        @Positive
+        BigDecimal amount
+)
 {
 
 }

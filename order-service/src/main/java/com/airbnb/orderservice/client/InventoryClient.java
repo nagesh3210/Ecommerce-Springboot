@@ -5,7 +5,7 @@ import inventory.stockRequest;
 import inventory.stockResponse;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 
-public class InventoryService
+public class InventoryClient
 {
     @GrpcClient("inventory")
     private InventoryGrpcServiceGrpc

@@ -16,11 +16,12 @@ public class OrderEventProducer
 
     public void  publishOrderCreated(OrderCreatedEvent event)
     {
-        kafkaTemplate.send(KafkaTopics.ORDER_CREATED,event.orderId().toString(),event);
         log.info(
                 "Publishing OrderCreatedEvent : {}",
                 event
         );
+        kafkaTemplate.send(KafkaTopics.ORDER_CREATED,event.orderId().toString(),event);
+
 
 
     }

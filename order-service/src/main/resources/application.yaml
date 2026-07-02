@@ -1,20 +1,54 @@
 spring:
   application:
     name: order-service
-grpc:
-  client:
-    inventory:
-      address: static://localhost:9090
-      negotiationType: plaintext
+
+  datasource:
+    url: jdbc:mysql://localhost:3307/order_db
+    username: root
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
   kafka:
     bootstrap-servers: localhost:9092
+
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    consumer:
+      group-id: order-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+
     properties:
       spring:
         json:
           add:
             type:
               headers: false
+
+grpc:
+  client:
+    inventory:
+      address: static://localhost:9090
+      negotiationType: plaintext
+
+server:
+  port: 8083
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
