@@ -1,28 +1,41 @@
+server:
+  port: 8084
+
+
 spring:
+
   application:
-    name: order-service
+    name: payment-service
+
 
   datasource:
-    url: jdbc:mysql://localhost:3307/order_db
+    url: jdbc:mysql://localhost:3307/payment_db
     username: root
     password: root
+
 
   jpa:
     hibernate:
       ddl-auto: update
+
     show-sql: true
 
 
   kafka:
 
+    bootstrap-servers: localhost:9092
+
+
     consumer:
 
-      group-id: order-group
+      group-id: payment-group
 
       auto-offset-reset: earliest
 
+
       key-deserializer:
         org.apache.kafka.common.serialization.StringDeserializer
+
 
       value-deserializer:
         org.springframework.kafka.support.serializer.JsonDeserializer
@@ -34,33 +47,14 @@ spring:
 
         spring.json.use.type.headers: false
 
+        spring.json.value.default.type:
+          com.airbnb.paymentservice.events.InventoryReservedEvent
 
     producer:
 
       key-serializer:
         org.apache.kafka.common.serialization.StringSerializer
 
+
       value-serializer:
         org.springframework.kafka.support.serializer.JsonSerializer
-
-      properties:
-
-        spring.json.add.type.headers: false
-
-
-grpc:
-  client:
-    inventory:
-      address: static://localhost:9090
-      negotiationType: plaintext
-
-
-server:
-  port: 8083
-
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics

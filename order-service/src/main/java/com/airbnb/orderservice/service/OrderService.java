@@ -71,4 +71,34 @@ public class OrderService
     }
 
 
+    @Transactional
+    public void completePayment(Long orderId)
+    {
+
+        Order order = repository.findById(orderId).orElseThrow(() -> new RuntimeException("This orerid is not present"));
+
+
+        order.setStatus(OrderStatus.PAYMENT_COMPLETED);
+
+        Order save = repository.save(order);
+
+        log.info("Payment Completed for  order id {}",orderId);
+    }
+
+
+    @Transactional
+    public void paymentFailed(Long orderId)
+    {
+        Order order = repository.findById(orderId).orElseThrow(() -> new RuntimeException("Order id not present"));
+
+
+        order.setStatus(OrderStatus.PAYMENT_FAILED);
+
+        Order save = repository.save(order);
+
+        log.info("Order cancelled because of payment failed {}",orderId);
+
+    }
+
+
 }

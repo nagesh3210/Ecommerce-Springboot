@@ -12,36 +12,57 @@ spring:
       ddl-auto: update
     show-sql: true
 
+
   kafka:
     bootstrap-servers: localhost:9092
+
 
     consumer:
       group-id: inventory-group
       auto-offset-reset: earliest
 
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      key-deserializer:
+        org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+
+      value-deserializer:
+        org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
 
       properties:
-        spring:
-          json:
-            trusted:
-              packages: "*"
-            value:
-              default:
-                type: com.airbnb.inventoryservice.events.OrderCreatedEvent
+
+        spring.deserializer.key.delegate.class:
+          org.apache.kafka.common.serialization.StringDeserializer
+
+        spring.deserializer.value.delegate.class:
+          org.springframework.kafka.support.serializer.JsonDeserializer
+
+        spring.json.trusted.packages: "*"
+
+        spring.json.value.default.type:
+          com.airbnb.inventoryservice.events.OrderCreatedEvent
+
 
     producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+      key-serializer:
+        org.apache.kafka.common.serialization.StringSerializer
+
+      value-serializer:
+        org.springframework.kafka.support.serializer.JsonSerializer
+
+      properties:
+
+        spring.json.add.type.headers: false
+
 
 logging:
   level:
     org.hibernate.tool.schema: DEBUG
     org.hibernate.orm.boot: DEBUG
 
+
 server:
   port: 8082
+
 
 grpc:
   server:

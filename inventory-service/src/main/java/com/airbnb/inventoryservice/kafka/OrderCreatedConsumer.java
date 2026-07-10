@@ -32,7 +32,7 @@ public class OrderCreatedConsumer
         try {
             Inventory inventory = inventoryService.reserveInventory(event.productId(), event.quantity());
 
-            inventoryEventProducer.publishInventoryReserved(new InventoryReservedEvent(event.orderId(),inventory.getProductId(),event.quantity()));
+            inventoryEventProducer.publishInventoryReserved(new InventoryReservedEvent(event.orderId(),inventory.getProductId(),event.quantity(),event.amount()));
 
 
         }

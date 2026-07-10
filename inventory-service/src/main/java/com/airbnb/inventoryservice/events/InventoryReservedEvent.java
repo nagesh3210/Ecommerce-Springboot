@@ -1,4 +1,6 @@
 package com.airbnb.inventoryservice.events;
 
-public record InventoryReservedEvent (Long orderId, Long productId, Integer quantity){
+import java.math.BigDecimal;
+
+public record InventoryReservedEvent (Long orderId, Long productId, Integer quantity, BigDecimal amount){
 }
