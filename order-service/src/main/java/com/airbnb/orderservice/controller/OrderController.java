@@ -2,6 +2,7 @@ package com.airbnb.orderservice.controller;
 
 import com.airbnb.orderservice.dto.OrderRequest;
 import com.airbnb.orderservice.service.OrderService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -20,8 +21,7 @@ public class OrderController
     private final OrderService service;
 
     @PostMapping
-    public ResponseEntity<?> createOrder(@RequestBody @Valid OrderRequest request)
-    {
+    public ResponseEntity<?> createOrder(@RequestBody @Valid OrderRequest request) throws JsonProcessingException {
         service.createOrder(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
 

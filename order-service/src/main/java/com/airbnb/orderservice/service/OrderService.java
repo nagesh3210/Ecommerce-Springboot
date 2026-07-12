@@ -4,8 +4,11 @@ import com.airbnb.orderservice.dto.OrderRequest;
 import com.airbnb.orderservice.entity.Order;
 import com.airbnb.orderservice.entity.OrderStatus;
 import com.airbnb.orderservice.events.OrderCreatedEvent;
+import com.airbnb.orderservice.kafka.KafkaTopics;
 import com.airbnb.orderservice.kafka.OrderEventProducer;
 import com.airbnb.orderservice.repository.OrderRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +26,13 @@ public class OrderService
 
     private final OrderRepository repository;
     private final OrderEventProducer producer;
+    private final ObjectMapper objectMapper;
+    private final OutboxService outboxService;
 
 
 
     @Transactional
-    public void createOrder(OrderRequest request)
+    public void createOrder(OrderRequest request) throws JsonProcessingException
     {
         Order order = Order.builder().
                 customerId(request.customerId()).productId(request.productId()).quantity(request.quantity())
@@ -35,13 +40,22 @@ public class OrderService
 
         Order save = repository.save(order);
 
-        producer.publishOrderCreated(new OrderCreatedEvent(
-                save.getId(),
-                save.getCustomerId(),
-                save.getProductId(),
-                save.getQuantity(),
-                save.getAmount()
-        ));
+
+        OrderCreatedEvent event= new OrderCreatedEvent(save.getId(), save.getCustomerId(), save.getProductId(), save.getQuantity(), save.getAmount());
+
+
+        String payload = objectMapper.writeValueAsString(event);
+
+
+       outboxService.saveEvent("ORDER", save.getId(), KafkaTopics.ORDER_CREATED,payload);
+
+//        producer.publishOrderCreated(new OrderCreatedEvent(
+//                save.getId(),
+//                save.getCustomerId(),
+//                save.getProductId(),
+//                save.getQuantity(),
+//                save.getAmount()
+//        ));
 
 
     }

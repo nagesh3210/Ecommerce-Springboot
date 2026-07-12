@@ -5,6 +5,7 @@ import com.airbnb.inventoryservice.dto.InventoryResponse;
 import com.airbnb.inventoryservice.entity.Inventory;
 import com.airbnb.inventoryservice.exception.InventoryNotAvailableException;
 import com.airbnb.inventoryservice.repository.InventoryRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class InventoryService
         );
     }
 
+    @Transactional
     public Inventory reserveInventory(Long productId,Integer quantity)
     {
         Inventory inventory = inventoryRepository.findByProductId(productId).orElseThrow(() -> new InventoryNotAvailableException(productId));
@@ -48,6 +50,31 @@ public class InventoryService
                 );
 
         return save;
+
+    }
+
+    @Transactional
+    public void releaseInventory(Long productId, Integer quantity)
+    {
+
+        Inventory inventory = inventoryRepository.findByProductId(productId).orElseThrow();
+
+
+        log.info("No of stock before release stock : {}",inventory.getAvailableQuantity());
+
+        inventory.setAvailableQuantity(inventory.getAvailableQuantity()+quantity);
+
+
+        Inventory save = inventoryRepository.save(inventory);
+
+
+        log.info(
+                "Inventory released product {} quantity {}",
+                productId,
+                quantity
+        );
+
+        log.info("No of stock after release stock : {}",save.getAvailableQuantity());
 
     }
 

@@ -23,7 +23,9 @@ public class InventoryReservedConsumer
     private final PaymentEventProducer paymentEventProducer;
 
 
-    @KafkaListener(topics = KafkaTopics.INVENTORY_RESERVED, groupId = "payment-group")
+    @KafkaListener(topics = KafkaTopics.INVENTORY_RESERVED, groupId = "payment-group",properties = {
+            "spring.json.value.default.type=com.airbnb.paymentservice.events.InventoryReservedEvent"
+    })
     public void consume(InventoryReservedEvent event)
     {
 
@@ -38,7 +40,7 @@ public class InventoryReservedConsumer
 
         }
         else {
-            paymentEventProducer.publicPaymentFailed(new PaymentFailedEvent(event.orderId(), "Payment Failed"));
+            paymentEventProducer.publicPaymentFailed(new PaymentFailedEvent(event.orderId(), event.productId(),event.quantity(),"payment Failed due to payment isuue '"+event.orderId()+"'"));
         }
 
     }

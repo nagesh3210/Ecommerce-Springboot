@@ -21,7 +21,10 @@ public class OrderCreatedConsumer
 
     private final InventoryEventProducer inventoryEventProducer;
 
-    @KafkaListener(topics = KafkaTopics.ORDER_CREATED,groupId = "inventory-group")
+    @KafkaListener(topics = KafkaTopics.ORDER_CREATED,groupId = "inventory-group",       properties = {
+            "spring.json.value.default.type=com.airbnb.inventoryservice.events.OrderCreatedEvent"
+    })
+
     public void consume(OrderCreatedEvent event)
     {
         log.info(
