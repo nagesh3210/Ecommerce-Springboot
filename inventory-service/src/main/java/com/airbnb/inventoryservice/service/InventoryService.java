@@ -18,6 +18,7 @@ public class InventoryService
 
     private final InventoryRepository inventoryRepository;
 
+    @Transactional
     public InventoryResponse checkStock(Long productId)
     {
         Inventory inventory = inventoryRepository.findByProductId(productId).orElseThrow();

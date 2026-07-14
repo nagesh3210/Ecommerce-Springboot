@@ -64,3 +64,41 @@ management:
     web:
       exposure:
         include: health,info,metrics
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      inventoryService:
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+
+
+  retry:
+    instances:
+      inventoryService:
+        maxAttempts: 3
+        waitDuration: 2s
+
+  timelimiter:
+    instances:
+      inventoryService:
+        timeoutDuration: 5s
+
+
+  bulkhead:
+    instances:
+      inventoryService:
+        maxConcurrentCalls: 20
+        maxWaitDuration: 1s
+
+
+  ratelimiter:
+    instances:
+      inventoryService:
+        limitForPeriod: 50
+        limitRefreshPeriod: 1s
+        timeoutDuration: 500ms

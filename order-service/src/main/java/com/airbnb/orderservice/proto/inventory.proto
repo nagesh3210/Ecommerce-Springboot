@@ -1,20 +1,20 @@
-syntax = "proto3";
-
-package inventory;
-
-option java_multiple_files = true;
-
-service InventoryGrpcService{
-  rpc checkStock(stockRequest) returns(stockResponse);
-}
-
-message stockRequest{
-      int64 productId = 1;
-    };
-
-message stockResponse{
-  int64 productId = 1;
-  int32 avaiableQuantity = 2;
-  bool inStock = 3;
-}
-
+//syntax = "proto3";
+//
+//package inventory;
+//
+//option java_multiple_files = true;
+//
+//service InventoryGrpcService{
+//  rpc checkStock(stockRequest) returns(stockResponse);
+//}
+//
+//message stockRequest{
+//      int64 productId = 1;
+//    };
+//
+//message stockResponse{
+//  int64 productId = 1;
+//  int32 avaiableQuantity = 2;
+//  bool inStock = 3;
+//}
+//
